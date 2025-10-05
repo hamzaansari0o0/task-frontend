@@ -1,0 +1,23 @@
+
+.navbar {
+  background: #000;
+  padding: 12px 20px;
+  display: flex;
+  text-align: center;  
+
+  font-family: Arial, sans-serif;
+
+}
+
+.navbar a {
+  
+  margin: 0 15px;        
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ccc;
+}

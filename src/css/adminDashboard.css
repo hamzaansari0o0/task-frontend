@@ -1,0 +1,61 @@
+.admin-dashboard {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  text-align: center;
+  color: #000;
+}
+
+.admin-dashboard h2 {
+  margin-bottom: 20px;
+}
+
+.admin-dashboard input {
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  outline: none;
+  margin-right: 10px;
+}
+
+.admin-dashboard button {
+  padding: 8px 12px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-dashboard button:hover {
+  background: #333;
+}
+
+.admin-dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.admin-dashboard th,
+.admin-dashboard td {
+  border: 1px solid #000;
+  padding: 10px;
+  text-align: center;
+}
+
+.admin-dashboard th {
+  background: #000;
+  color: #fff;
+}
+
+.admin-dashboard select {
+  padding: 6px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background: #fff;
+  outline: none;
+}
+
+.admin-dashboard select:focus {
+  border-color: #444;
+}
