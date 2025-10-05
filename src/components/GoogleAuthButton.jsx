@@ -24,13 +24,12 @@
 
 // export default GoogleLoginButton;
 ////////////////////////////////////////////////
-
 import React from "react";
 
 const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
-    // ✅ Backend ka google route ab dynamic URL se hit hoga
-    window.location.href = `${process.env.REACT_APP_API_URL}/api/users/google`; // ✅ CHANGE HERE
+    // ✅ URL direct code mein likh diya gaya hai
+    window.location.href = "https://task-backend-iota-beige.vercel.app/api/users/google";
   };
 
   return (

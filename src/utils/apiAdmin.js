@@ -36,14 +36,13 @@
 
 // export default apiAdmin;
 ////////////////////////////////////////////////////
-
 import axios from "axios";
 
-// ✅ baseURL ab environment variable se aayega
-const baseURL = process.env.REACT_APP_API_URL;
+// ✅ URL direct code mein likh diya gaya hai
+const baseURL = "https://task-backend-iota-beige.vercel.app";
 
 const apiAdmin = axios.create({
-  baseURL: `${baseURL}/api/admin`, // ✅ CHANGE HERE
+  baseURL: `${baseURL}/api/admin`,
   withCredentials: true,
 });
 
@@ -55,9 +54,8 @@ apiAdmin.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // ✅ Refresh URL bhi ab dynamic hai
         await axios.post(
-          `${baseURL}/api/users/refresh`, // ✅ CHANGE HERE
+          `${baseURL}/api/users/refresh`,
           {},
           { withCredentials: true }
         );

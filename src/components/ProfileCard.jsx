@@ -280,9 +280,9 @@ const ProfileCard = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-lg">
         {user.profilePicture ? (
-          <ImagePreview
-            // ✅ Image source ab dynamic URL se aayega
-            src={`${process.env.REACT_APP_API_URL}/${user.profilePicture}`} // ✅ CHANGE HERE
+           <ImagePreview
+            // ✅ URL direct code mein likh diya gaya hai
+            src={`https://task-backend-iota-beige.vercel.app/${user.profilePicture}`} 
             alt="Profile"
             className="mx-auto mb-4 h-32 w-32 rounded-full border-4 border-white shadow-md"
           />

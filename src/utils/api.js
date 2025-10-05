@@ -32,14 +32,13 @@
 
 // export default api;
 //////////////////////////////////////////////////////////////
+// utils/api.js (Updated)import axios from "axios";
 
-import axios from "axios";
-
-// ✅ baseURL ab environment variable se aayega
-const baseURL = process.env.REACT_APP_API_URL;
+// ✅ URL direct code mein likh diya gaya hai
+const baseURL = "https://task-backend-iota-beige.vercel.app";
 
 const api = axios.create({
-  baseURL: `${baseURL}/api/users`, // ✅ CHANGE HERE
+  baseURL: `${baseURL}/api/users`, 
   withCredentials: true,
 });
 
@@ -51,8 +50,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // ✅ Refresh URL bhi ab dynamic hai
-        await axios.post(`${baseURL}/api/users/refresh`, {}, { // ✅ CHANGE HERE
+        await axios.post(`${baseURL}/api/users/refresh`, {}, {
           withCredentials: true,
         });
         return api(originalRequest);
