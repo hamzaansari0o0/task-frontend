@@ -100,6 +100,7 @@ const SignupForm = () => {
           </label>
           <input
             type="file"
+            name="profilePicture"
             accept="image/*"
             onChange={handleFileChange}
             className="block w-full text-sm text-gray-500
