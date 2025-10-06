@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../utils/api";
 import ImagePreview from "./ImagePreview";
+import { FaArrowLeft } from "react-icons/fa"; // 👈 ICON IMPORT KIYA GAYA
 
 const ProfileCard = () => {
   const [user, setUser] = useState(null);
@@ -84,10 +85,18 @@ const ProfileCard = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-lg">
+      <div className="relative w-full max-w-sm rounded-xl bg-white p-6 pt-12 text-center shadow-lg">
+        {/* 👈 DASHBOARD ARROW LINK ADD KIYA GAYA */}
+        <Link 
+          to="/dashboard"
+          className="absolute top-4 left-4 text-gray-400 hover:text-gray-700 transition-colors"
+          aria-label="Back to Dashboard"
+        >
+          <FaArrowLeft className="text-xl sm:text-2xl" />
+        </Link>
+        
         {user.profilePicture ? (
            <ImagePreview
-            // ✅ CHANGE HERE: Sirf user.profilePicture istemal karein
             src={user.profilePicture} 
             alt="Profile"
             className="mx-auto mb-4 h-32 w-32 rounded-full border-4 border-white shadow-md"

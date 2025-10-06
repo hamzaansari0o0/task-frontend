@@ -31,7 +31,7 @@ const SigninForm = () => {
       if (user.role === "admin") {
         navigate("/admin/dashboard");
       } else {
-        navigate("/profile");
+        navigate("/dashboard");
       }
     } catch (err) {
       alert(err.response?.data?.message || "Login failed ❌");
