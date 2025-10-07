@@ -1,3 +1,5 @@
+// src/components/SigninForm.jsx (or wherever this file is)
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/api";
@@ -23,11 +25,17 @@ const SigninForm = () => {
     try {
       const res = await api.post("/login", formData);
       const { user } = res.data;
+
+      // ✅ Login status save karein taake Navbar update ho sake
+      localStorage.setItem('isLoggedIn', 'true');
+
       if (user?.role) {
         localStorage.setItem("role", user.role);
-        window.dispatchEvent(new Event("storage"));
+        // window.dispatchEvent(new Event("storage")); // Yeh line abhi zaroori nahi
       }
+      
       alert(res.data.message);
+
       if (user.role === "admin") {
         navigate("/admin/dashboard");
       } else {
