@@ -1,3 +1,5 @@
+// src/pages/DashboardPage.jsx
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import apiTask from "../utils/apiTask";
@@ -12,7 +14,6 @@ const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
 
-  // --- Logic waisa hi rahega ---
   const fetchTasks = async () => {
     try {
       setLoading(true);
@@ -62,79 +63,50 @@ const DashboardPage = () => {
       }
     }
   };
-  // --- Logic ka end ---
+  
+  // Task state ko locally update karne ka function
+  const handleTaskUpdate = (updatedTask) => {
+    setTasks(tasks.map(task => 
+      task._id === updatedTask._id ? updatedTask : task
+    ));
+  };
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg font-semibold text-gray-600">Loading...</p>
-      </div>
-    );
+    return <div className="flex min-h-screen items-center justify-center"><p>Loading...</p></div>;
   }
-
   if (error) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg font-semibold text-red-500">{error}</p>
-      </div>
-    );
+    return <div className="flex min-h-screen items-center justify-center"><p className="text-red-500">{error}</p></div>;
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4 sm:p-6 md:p-8">
+    <div className="bg-gray-100 min-h-screen p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Responsive Heading */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 text-center sm:text-left">
-            My Tasks
-          </h1>
-        </div>
-
+        <h1 className="text-4xl font-bold text-gray-800 mb-8">My Tasks</h1>
         {tasks.length > 0 ? (
-          // Responsive Grid for Task Cards
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {tasks.map((task) => (
               <TaskCard 
                 key={task._id} 
                 task={task} 
                 onEdit={handleEditClick}
                 onDelete={handleDeleteClick}
+                onTaskUpdate={handleTaskUpdate}
               />
             ))}
           </div>
         ) : (
-          // Responsive Empty State Message
-          <div className="text-center bg-white p-6 sm:p-8 rounded-lg shadow-md mt-10">
-            <p className="text-lg sm:text-xl text-gray-600 mb-4">You have no tasks yet.</p>
-            <p className="text-base sm:text-lg text-gray-500">Click the green button to get started!</p>
+          <div className="text-center bg-white p-8 rounded-lg shadow-md mt-10">
+            <p className="text-xl text-gray-600">You have no tasks yet.</p>
           </div>
         )}
       </div>
-
-      {/* Responsive Floating Profile Button */}
-      <Link
-        to="/profile"
-        className="fixed top-4 right-4 md:top-6 md:right-6 z-50 h-12 w-12 md:h-14 md:w-14 bg-gray-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-800 transition-transform hover:scale-110"
-        aria-label="View Profile"
-      >
-        <FaUserCircle className="text-xl md:text-2xl" />
+      <Link to="/profile" className="fixed top-6 right-6 z-50 h-14 w-14 bg-gray-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-800 transition-transform hover:scale-110">
+        <FaUserCircle className="text-2xl" />
       </Link>
-
-      {/* Responsive Floating Add Task Button */}
-      <button
-        onClick={() => { setTaskToEdit(null); setIsModalOpen(true); }}
-        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 h-14 w-14 md:h-16 md:w-16 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 transition-transform hover:scale-110"
-        aria-label="Add New Task"
-      >
-        <FaPlus className="text-xl md:text-2xl" />
+      <button onClick={() => { setTaskToEdit(null); setIsModalOpen(true); }} className="fixed bottom-8 right-8 z-50 h-16 w-16 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 transition-transform hover:scale-110">
+        <FaPlus className="text-2xl" />
       </button>
-
-      <AddTaskModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveTask}
-        taskToEdit={taskToEdit}
-      />
+      <AddTaskModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveTask} taskToEdit={taskToEdit} />
     </div>
   );
 };

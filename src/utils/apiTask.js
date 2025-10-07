@@ -1,35 +1,40 @@
+// src/utils/apiTask.js
+
 import axios from "axios";
 
-// ✅ Backend URL ko hardcode kar diya gaya hai
-const baseURL = "https://task-backend-iota-beige.vercel.app";
+// ✅ URL ab environment variable se aa raha hai
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-// Yeh instance sirf tasks se related API calls ke liye hai
 const apiTask = axios.create({
-  baseURL: `${baseURL}/api/tasks`, // <-- Base URL sirf tasks tak
+  baseURL: `${baseURL}/api/tasks`,
   withCredentials: true,
 });
 
-// Response interceptor for handling expired access tokens
+// PDF file upload karne ka function
+export const uploadTaskFile = (taskId, formData) => {
+  return apiTask.post(`/${taskId}/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+// Interceptor mein koi change nahi
 apiTask.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
-    // Agar token expire ho gaya (401) aur yeh pehli koshish hai
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // Naya access token hasil karne ke liye refresh endpoint call karein
         await axios.post(
-          `${baseURL}/api/users/refresh`, // <-- Yahan bhi URL update kiya gaya
+          `${baseURL}/api/users/refresh`,
           {},
           { withCredentials: true }
         );
-        // Original request dobara try karein
         return apiTask(originalRequest);
       } catch (refreshError) {
         console.error("Token refresh failed ❌", refreshError);
-        // Agar refresh bhi fail ho jaye to login page par bhej dein
         window.location.href = "/signin";
       }
     }

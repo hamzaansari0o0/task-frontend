@@ -1,48 +1,16 @@
-// import axios from "axios";
+// src/utils/api.js
 
-// const api = axios.create({
-//   baseURL: "http://localhost:5000/api/users", // tumhara backend users route
-//   withCredentials: true, // cookies allow
-// });
+import axios from "axios";
 
-// api.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-//     if (error.response?.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       try {
-//         // ✅ POST request instead of GET
-//         await axios.post("http://localhost:5000/api/users/refresh", {}, {
-//           withCredentials: true,
-//         });
-//         return api(originalRequest); // retry karega
-//       } catch (err) {
-//         console.error("Refresh token failed ❌", err);
-//         // optional: logout ya login page redirect
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
-
-
-
-// export default api;
-//////////////////////////////////////////////////////////////
-// utils/api.js (Updated)import axios from "axios";
-import axios from "axios"; // 👈 YEH LINE ADD KI GAYI HAI
-
-// URL direct code mein likh diya gaya hai
-const baseURL = "https://task-backend-iota-beige.vercel.app";
+// ✅ URL ab environment variable se aa raha hai
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
   baseURL: `${baseURL}/api/users`, 
   withCredentials: true,
 });
 
+// Interceptor mein koi change nahi, woh waisa hi rahega
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -59,7 +27,6 @@ api.interceptors.response.use(
         console.error("Refresh token failed ❌", err);
       }
     }
-
     return Promise.reject(error);
   }
 );
