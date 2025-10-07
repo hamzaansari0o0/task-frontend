@@ -1,51 +1,16 @@
-// // utils/apiAdmin.js
-// import axios from "axios";
+// src/utils/apiAdmin.js
 
-// const apiAdmin = axios.create({
-//   baseURL: "http://localhost:5000/api/admin",
-//   withCredentials: true, // cookies bhejne ke liye zaroori
-// });
-
-// // Response interceptor
-// apiAdmin.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-//     // Agar access token expire ho gaya (401 mila)
-//     if (error.response?.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       try {
-//         // Refresh token request (user wala hi route use karna hai)
-//         await axios.post(
-//           "http://localhost:5000/api/users/refresh",
-//           {},
-//           { withCredentials: true }
-//         );
-
-//         // Retry original request
-//         return apiAdmin(originalRequest);
-//       } catch (refreshError) {
-//         console.error("Admin refresh token failed ❌", refreshError);
-//         window.location.href = "/signin";
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default apiAdmin;
-////////////////////////////////////////////////////
 import axios from "axios";
 
-// ✅ URL direct code mein likh diya gaya hai
-const baseURL = "https://task-backend-iota-beige.vercel.app";
+// ✅ URL ab environment variable se aa raha hai
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const apiAdmin = axios.create({
   baseURL: `${baseURL}/api/admin`,
   withCredentials: true,
 });
 
+// Interceptor logic bilkul theek hai, bas ab yeh dynamic baseURL istemal karega
 apiAdmin.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -54,15 +19,18 @@ apiAdmin.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
+        // Naya token lene ke liye refresh endpoint call karein
         await axios.post(
           `${baseURL}/api/users/refresh`,
           {},
           { withCredentials: true }
         );
+        // Original request dobara try karein
         return apiAdmin(originalRequest);
       } catch (refreshError) {
-        console.error("Admin refresh token failed ❌", refreshError);
-        window.location.href = "/signin";
+        console.error("Admin API refresh token failed ❌:", refreshError.message);
+        // Agar refresh fail ho to user ko signin page par bhej dein
+        window.location.href = "/signin"; 
       }
     }
     return Promise.reject(error);
